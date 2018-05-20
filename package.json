@@ -1,0 +1,28 @@
+{
+  "name": "mmosvr",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Nick Smith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicholaspsmith/mmoserver/issues"
+  },
+  "homepage": "https://github.com/nicholaspsmith/mmoserver#readme",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "description": "An MMO Server",
+  "main": "server.js",
+  "devDependencies": {},
+  "dependencies": {
+    "binary-parser": "1.3.2",
+    "extend": "3.0.1",
+    "minimist": "1.2.0",
+    "mongoose": "5.1.1",
+    "underscore": "1.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nicholaspsmith/mmoserver.git"
+  }
+}
