@@ -3,14 +3,14 @@ var _ = require('underscore')
 
 module.exports = function() {
   // These objects will be added at runtime:
-  // This.socket = {}
-  // This.user = {}
+  // this.socket = {}
+  // this.user = {}
 
   this.initiate = function() {
     var client = this;
 
     // Send connection handshake packet
-    client.socket.write(packet.build(["HELLO", now.toString()]))
+    client.socket.write(packet.build(["HELLO", now().toString()]))
     console.log('client initiated')
   }
 
