@@ -20,11 +20,11 @@ userSchema.statics.register = function(username, password, cb) {
     pos_x: maps[config.starting_zone].start_x,
     pos_y: maps[config.starting_zone].start_y
   })
-
   new_user.save(function(err) {
     if (!err) {
       cb(true)
     } else {
+      console.log(err)
       cb(false)
     }
   })

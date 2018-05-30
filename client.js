@@ -44,7 +44,11 @@ module.exports = function() {
   }
 
   this.end = function() {
-    // client.user.save()
+    if (typeof client !== 'undefined') {
+      if (typeof client.user !== 'undefined') {
+        client.user.save()
+      }
+    }
     console.log("client disconnected")
   }
 }
