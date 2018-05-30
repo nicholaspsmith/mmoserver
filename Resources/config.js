@@ -19,7 +19,7 @@ var conf = {
   production: {
     ip: args.ip || "0.0.0.0",
     port: args.port || 8081,
-    database: "mongodb://127.0.0.1/mmo_prod"
+    database: "mongodb://nick:asdf@127.0.0.1/mmo_prod"
   },
   test: {
     ip: args.ip || "0.0.0.0",
