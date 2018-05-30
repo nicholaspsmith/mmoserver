@@ -54,6 +54,8 @@ module.exports = packet = {
     switch (header.command.toUpperCase()) {
       case "LOGIN":
         var data = PacketModels.login.parse(datapacket)
+        console.log(data.username)
+        console.log(data.password)
         User.login(data.username, data.password, function(result, user) {
           console.log("Login Result " + result)
           if (result) {
