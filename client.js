@@ -6,16 +6,37 @@ module.exports = function() {
   // this.socket = {}
   // this.user = {}
 
-  this.initiate = function() {
-    var client = this;
+  var client = this
 
+  // Initialization
+  this.initiate = function() {
     // Send connection handshake packet
     client.socket.write(packet.build(["HELLO", now().toString()]))
     console.log('client initiated')
   }
 
+  // Client Methods
+  this.enterroom = function (selected_room) {
+    maps[selected_room].clients.forEach(function(otherClient) {
+      otherClient.socket.write(packet.build(["ENTER", client.user.username, client.user.pos_x, client.user.pos_y]))
+    })
+
+    maps[selected_room].clients.push(client)
+  }
+
+  this.broadcastroom = function(packetData) {
+    maps[client.user.current_room].clients.forEach(function(otherClient) {
+
+      if (otherClient.user.username != client.user.username && typeof packetData !== 'undefined') {
+        otherClient.socket.write(packetData)
+      }
+
+    })
+  }
+
+  // Socket Handlers
   this.data = function(data){
-    console.log("data received: " + data.toString())
+    packet.parse(client, data)
   }
 
   this.error = function(err) {
@@ -23,6 +44,7 @@ module.exports = function() {
   }
 
   this.end = function() {
+    // client.user.save()
     console.log("client disconnected")
   }
 }

@@ -32,4 +32,58 @@ module.exports = packet = {
 
     return finalPacket
   },
+
+  // Parse a packet to be handled for a client
+  parse: function(c, data) {
+    var idx = 0
+
+    while (idx < data.length) {
+      var packetSize = data.readUInt8(idx)
+      var extractedPacket = new Buffer(packetSize)
+      data.copy(extractedPacket, 0, idx, idx + packetSize)
+
+      this.interpret(c, extractedPacket)
+
+      idx += packetSize
+    }
+  },
+
+  interpret: function(c, datapacket) {
+    var header = PacketModels.header.parse(datapacket)
+
+    switch (header.command.toUpperCase()) {
+      case "LOGIN":
+        var data = PacketModels.login.parse(datapacket)
+        User.login(data.username, data.password, function(result, user) {
+          console.log("Login Result " + result)
+          if (result) {
+            c.user = user
+            c.enterroom(c.user.current_room)
+            c.socket.write(packet.build(["LOGIN", "TRUE", c.user.current_room, c.user.pos_x, c.user.pos_y, c.user.username]))
+          } else {
+            c.socket.write(packet.build(["LOGIN", "FALSE"]))
+          }
+        })
+        break;
+      case "REGISTER":
+        var data = PacketModels.register.parse(datapacket)
+        User.register(data.username, data.password, function(result) {
+          if(result) {
+            c.socket.write(packet.build(["REGISTER", "TRUE"]))
+          } else { 
+            c.socket.write(packet.build(["REGISTER", "FALSE"]))
+          }
+        })
+        break;
+      case "POS":
+        var data = PacketModels.pos.parse(datapacket)
+        c.user.pos_x = data.target_x
+        c.user.pos_y = data.target_y
+        var newpacket = packet.build(["POS", c.user.username, data.target_x, data.target_y])
+        c.broadcastroom(newpacket)
+        break;
+      default:
+        break;
+    }
+  }
 }
