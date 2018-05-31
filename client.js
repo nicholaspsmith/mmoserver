@@ -36,8 +36,7 @@ module.exports = function() {
 
   // Socket Handlers
   this.data = function(data){
-    console.log(data)
-    //packet.parse(client, data)
+    packet.parse(client, data)
   }
 
   this.error = function(err) {
